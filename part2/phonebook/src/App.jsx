@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Persons from './components/persons'
 import PersonForm from './components/personform'
 import Filter from './components/filter'
+import Notification from './components/notification'
 
 import personsService from './services/persons'
 
@@ -12,6 +12,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [notifMessage, setNotifMessage] = useState(null)
 
   useEffect(() => {
     personsService
@@ -41,7 +42,9 @@ const App = () => {
         .update(existingPerson.id, personObject)
         .then((updatedPerson) => {
           setPersons(persons.map(person => person.id === existingPerson.id ? updatedPerson : person))
+          setNotifMessage(`updated ${updatedPerson.name}`)
         })
+
       }
     } else if(existingPerson && existingPerson.number === newNumber) {
       alert(`${existingPerson.name}'s number is already ${newNumber}`)
@@ -50,10 +53,16 @@ const App = () => {
     } else {
       personsService
         .create(personObject)
-        .then(newPerson => {setPersons(persons.concat(newPerson))})
+        .then(newPerson => {
+          setPersons(persons.concat(newPerson))
+          setNotifMessage(`Added ${newPerson.name}`)
+        })
     }
     setNewName('')
     setNewNumber('')
+    setTimeout(() => {
+      setNotifMessage(null)
+    }, 5000)
   }
 
   const removePerson = (person) => {
@@ -98,6 +107,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notifMessage}/>
       <Filter value={newFilter} onChange={handleFilter}/>
       <h2>Add a new</h2>
       <PersonForm onSubmit={addPerson} inputs={formInputs}/>
