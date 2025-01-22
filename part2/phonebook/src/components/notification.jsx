@@ -1,6 +1,10 @@
-const Notification = ({message}) => {
+const Notification = ({ notification }) => {
+  if (notification === null) {
+    return null
+  }
+
   const notificationStyle = {
-    color: "green",
+    color: notification.type === 'error' ? 'red' : 'green',
     background: 'lightgrey',
     fontSize: '20px',
     borderStyle: 'solid',
@@ -9,13 +13,9 @@ const Notification = ({message}) => {
     marginBottom: '10px',
   }
 
-  if (message === null) {
-    return null
-  }
-
   return (
     <div style={notificationStyle}>
-      {message}
+      {notification.message}
     </div>
   )
 }
