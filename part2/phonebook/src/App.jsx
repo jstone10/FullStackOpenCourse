@@ -89,30 +89,21 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
-  const formInputs = [
-    {
-      id: 1,
-      name:'newName', 
-      value: newName, 
-      onChange: handleNewPerson
-    },
-    {
-      id: 2,
-      name: 'newNumber',
-      value: newNumber,
-      onChange: handleNewPerson
-    }
-  ]
-
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notifMessage}/>
-      <Filter value={newFilter} onChange={handleFilter}/>
+      <Notification message={notifMessage} />
+      <Filter value={newFilter} onChange={handleFilter} />
       <h2>Add a new</h2>
-      <PersonForm onSubmit={addPerson} inputs={formInputs}/>
+      <PersonForm
+        onSubmit={addPerson}
+        inputs={[
+          { id: 1, name: 'newName', value: newName, onChange: handleNewPerson, placeholder: 'Enter name' },
+          { id: 2, name: 'newNumber', value: newNumber, onChange: handleNewPerson, placeholder: 'Enter number' }
+        ]}
+      />
       <h2>Numbers</h2>
-      <Persons persons={personsToShow} removePerson={removePerson}/>
+      <Persons persons={personsToShow} removePerson={removePerson} />
     </div>
   )
 }
